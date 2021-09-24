@@ -1,0 +1,10 @@
+rootProject.name = 'HW_Kovalevskiy'
+
+include(':HW01_Kovalevskiy')
+include(':HW02_Kovalevskiy')
+include(':HW03_Kovalevskiy')
+include(':HW04_Kovalevskiy')
+include(':HW05_Kovalevskiy')
+include(':HW06_Kovalevskiy')
+include(':HW07_Kovalevskiy')
+include(':HW08_Kovalevskiy')
