@@ -1,6 +1,12 @@
 <configuration>
     <property file="./src/test/resources/logback.properties" />
 
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${log.pattern}</pattern>
+        </encoder>
+    </appender>
+
     <appender name="TASK1_ACTUAL" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${log.filePath}/task1/${log.actual}</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
@@ -44,9 +50,22 @@
 
     </logger>
 
-    <root level="INFO">
+    <logger name="ru.gb.hw01.task1">
         <appender-ref ref="TASK1_ACTUAL" />
         <appender-ref ref="TASK1_ERROR" />
-        <appender-ref ref="TASK1_STDOUT" />
+    </logger>
+
+    <logger name="ru.gb.hw01.task2">
+        <appender-ref ref="TASK2_ACTUAL" />
+        <appender-ref ref="TASK2_ERROR" />
+    </logger>
+
+    <logger name="ru.gb.hw01.task3">
+        <appender-ref ref="TASK3_ACTUAL" />
+        <appender-ref ref="TASK3_ERROR" />
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
     </root>
 </configuration>
