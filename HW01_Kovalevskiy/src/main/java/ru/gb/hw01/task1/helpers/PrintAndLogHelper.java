@@ -7,7 +7,7 @@ import ru.gb.hw01.task1.messages.Messages;
  * The PrintAndLogHelper Class is a helper class for printing and logging text messages
  *
  * @author e.kovalevskiy
- * @version 1.0
+ * @version 2.0
  */
 @Slf4j
 public class PrintAndLogHelper {
@@ -38,9 +38,9 @@ public class PrintAndLogHelper {
      *
      * @param message text
      */
-    public static void printAndLogError(Messages message, String logMessage) {
+    public static void printAndLogError(Messages message) {
         System.out.println(message.getOutMessage());
-        log.error(logMessage);
+        log.error(message.getLogMessage());
     }
     
     /**
@@ -49,7 +49,7 @@ public class PrintAndLogHelper {
      * @param message text
      * @param args params for substitution
      */
-    public static void printAndLogErrorWithArgs(Messages message, String logMessage, Object... args) {
+    public static void printAndLogErrorWithArgs(Messages message, Object... args) {
         System.out.printf(message.getOutMessage(), args);
         log.error(message.getLogMessage(), args);
     }

@@ -13,7 +13,7 @@ import java.util.stream.IntStream;
  * The Main Class represents homework #1 #task3
  *
  * @author e.kovalevskiy
- * @version 1.0
+ * @version 2.0
  */
 @Slf4j
 public class Main {
