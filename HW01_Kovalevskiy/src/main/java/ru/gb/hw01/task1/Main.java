@@ -11,7 +11,7 @@ import java.util.Arrays;
  * The Main Class represents homework #1 #task1
  *
  * @author e.kovalevskiy
- * @version 2.0
+ * @version 3.0
  */
 @Slf4j
 public class Main {
@@ -40,9 +40,10 @@ public class Main {
      */
     public static <T> void getSwappedArray(T[] initialArray, int a, int b) {
         try {
-            T[] swappedArray = ArrayService.swapElements(initialArray, a, b);
-    
             PrintAndLogHelper.printAndLogWithArgs(Messages.START_COMPOSITION, Arrays.toString(initialArray));
+            
+            T[] swappedArray = ArrayService.swapElements(initialArray, a, b);
+            
             PrintAndLogHelper.printAndLogWithArgs(Messages.FINAL_COMPOSITION, Arrays.toString(swappedArray));
         } catch (ArrayIndexOutOfBoundsException | IllegalArgumentException e) {
             PrintAndLogHelper.printAndLogErrorWithArgs(Messages.MAIN_EXCEPTION, e.getMessage());

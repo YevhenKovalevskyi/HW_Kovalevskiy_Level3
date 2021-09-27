@@ -7,7 +7,7 @@ import ru.gb.hw01.task3.messages.Messages;
  * The PrintAndLogHelper Class is a helper class for printing and logging text messages
  *
  * @author e.kovalevskiy
- * @version 2.0
+ * @version 3.0
  */
 @Slf4j
 public class PrintAndLogHelper {

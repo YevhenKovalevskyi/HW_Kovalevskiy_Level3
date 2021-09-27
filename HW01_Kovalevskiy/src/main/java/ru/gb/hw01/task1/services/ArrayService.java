@@ -9,7 +9,7 @@ import java.util.Collections;
  * ArrayService Class represents functionality for working with arrays
  *
  * @author e.kovalevskiy
- * @version 2.0
+ * @version 3.0
  */
 public class ArrayService {
     
