@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * The Box class represents the storage of fruits and internal operations with them.
  *
  * @author e.kovalevskiy
- * @version 1.0
+ * @version 2.0
  */
 @Slf4j
 @ToString
