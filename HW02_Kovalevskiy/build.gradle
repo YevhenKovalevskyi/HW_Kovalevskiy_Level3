@@ -3,24 +3,19 @@ test {
 }
 
 dependencies {
+    // mysql
+    compileOnly libraries.mysql
+    runtimeOnly libraries.mysql
+
+    // pgsql
+    compileOnly libraries.pgsql
+    runtimeOnly libraries.pgsql
+
     // lombok
     compileOnly libraries.lombok
     annotationProcessor libraries.lombok
     testCompileOnly libraries.lombok
     testAnnotationProcessor libraries.lombok
-
-    // junit5_core
-    testImplementation libraries.junit5_core
-    testRuntimeOnly libraries.junit5_core
-    // junit5_api
-    testImplementation libraries.junit5_api
-    testRuntimeOnly libraries.junit5_api
-    // junit5_params
-    testImplementation libraries.junit5_params
-    testRuntimeOnly libraries.junit5_params
-
-    // assertj
-    testImplementation libraries.assertj_core
 
     // slf4j
     compileOnly libraries.slf4j_api
