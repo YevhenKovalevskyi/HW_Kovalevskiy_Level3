@@ -1,0 +1,10 @@
+package ru.gb.hw02.task1;
+
+import ru.gb.hw02.task1.server.Server;
+
+public class ServerStarter {
+    
+    public static void main(String[] args) {
+        new Server();
+    }
+}
