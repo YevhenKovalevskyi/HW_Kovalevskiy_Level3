@@ -10,28 +10,34 @@ import java.util.HashMap;
 @Slf4j
 public class SQLModel {
     
-    private static final Connection connection = MySQLConnectionSingleton.getInstance();
-    
     /*  Insert, Update, Delete  */
-    public static int executeUpdate(String query) {
+    public static int executeUpdate(String query) throws SQLException {
         int result = 0;
         
-        try (Statement stmt = connection.createStatement()) {
-            log.info("Created connection statement");
-            
-            stmt.executeUpdate(query);
-
-            result = 1;
-        } catch (SQLException e) {
-            log.error("SQL connection createStatement error.");
-            e.printStackTrace();
+        try (
+                Connection connection = MySQLConnectionSingleton.getInstance();
+                Statement stmt = connection.createStatement()
+        ) {
+            try {
+                log.info("Created Connection and PreparedStatement.");
+                connection.setAutoCommit(false);
+                
+                result = stmt.executeUpdate(query);
+                
+                connection.commit();
+                log.error("SQL query executed.");
+            } catch (SQLException e) {
+                connection.rollback();
+                log.error("SQL query execution error. Transaction rolled back.");
+                e.printStackTrace();
+            }
         }
         
         return result;
     }
     
     /*  Insert, Update, Delete  */
-    public static int executeUpdateWithParams(String query, String[] params) {
+    public static int executeUpdateWithParams(String query, String[] params) throws SQLException {
         if (params.length == 0) {
             log.error("Empty query params array!");
             throw new IllegalArgumentException("Empty query params array!");
@@ -39,36 +45,46 @@ public class SQLModel {
         
         int result = 0;
         
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            log.info("Created connection statement");
-            
-            for (int i = 0; i < params.length; i++) {
-                stmt.setString((i + 1), params[i]);
+        try (
+                Connection connection = MySQLConnectionSingleton.getInstance();
+                PreparedStatement stmt = connection.prepareStatement(query)
+        ) {
+            try {
+                log.info("Created Connection and PreparedStatement.");
+                connection.setAutoCommit(false);
+                
+                for (int i = 0; i < params.length; i++) {
+                    stmt.setString((i + 1), params[i]);
+                }
+        
+                result = stmt.executeUpdate();
+                
+                connection.commit();
+                log.error("SQL query executed.");
+            } catch (SQLException e) {
+                connection.rollback();
+                log.error("SQL query execution error. Transaction rolled back.");
+                e.printStackTrace();
             }
-    
-            stmt.executeUpdate();
-            
-            result = 1;
-        } catch (SQLException e) {
-            log.error("SQL connection createStatement error.");
-            e.printStackTrace();
         }
         
         return result;
     }
     
     /*  For Select  */
-    public static ArrayList<HashMap<String, String>> execute(String query) {
+    public static ArrayList<HashMap<String, String>> execute(String query) throws SQLException {
         ArrayList<HashMap<String, String>> result = new ArrayList<>();
-        
+
         try (
+                Connection connection = MySQLConnectionSingleton.getInstance();
                 Statement stmt = connection.createStatement();
                 ResultSet rs = stmt.executeQuery(query)
         ) {
-            log.info("Created connection statement and statement resultSet.");
+            log.info("Created Connection and Statement and ResultSet.");
+            log.error("SQL query executed.");
             
             ResultSetMetaData md = rs.getMetaData();
-            log.info("Received resultSet metaData.");
+            log.info("Received ResultSet metaData.");
             
             int columnCount = md.getColumnCount();
             
@@ -83,16 +99,13 @@ public class SQLModel {
             }
             
             log.info("Filled the result ArrayList with the HashMaps of the query data.");
-        } catch (SQLException e) {
-            log.error("SQL connection createStatement / executeQuery error.");
-            e.printStackTrace();
         }
         
         return result;
     }
     
     /*  For Select  */
-    public static ArrayList<HashMap<String, String>> executeWithParams(String query, String[] params) {
+    public static ArrayList<HashMap<String, String>> executeWithParams(String query, String[] params) throws SQLException {
         if (params.length == 0) {
             log.error("Empty query params array!");
             throw new IllegalArgumentException("Empty query params array!");
@@ -100,18 +113,22 @@ public class SQLModel {
         
         ArrayList<HashMap<String, String>> result = new ArrayList<>();
         
-        try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            log.info("Created connection statement.");
+        try (
+                Connection connection = MySQLConnectionSingleton.getInstance();
+                PreparedStatement stmt = connection.prepareStatement(query)
+        ) {
+            log.info("Created Connection and PreparedStatement.");
             
             for (int i = 0; i < params.length; i++) {
                 stmt.setString((i + 1), params[i]);
             }
             
             try (ResultSet rs = stmt.executeQuery()) {
-                log.info("Created statement resultSet.");
+                log.error("SQL query executed.");
+                log.info("Created ResultSet.");
     
                 ResultSetMetaData md = rs.getMetaData();
-                log.info("Received resultSet metaData.");
+                log.info("Received ResultSet metaData.");
     
                 int columnCount = md.getColumnCount();
     
@@ -127,9 +144,6 @@ public class SQLModel {
     
                 log.info("Filled the result ArrayList with the HashMaps of the query data.");
             }
-        } catch (SQLException e) {
-            log.error("SQL connection createStatement / executeQuery error.");
-            e.printStackTrace();
         }
         
         return result;
