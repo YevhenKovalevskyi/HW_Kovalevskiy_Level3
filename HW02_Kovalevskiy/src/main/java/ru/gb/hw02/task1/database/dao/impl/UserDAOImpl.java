@@ -5,6 +5,7 @@ import ru.gb.hw02.task1.database.dao.UserDAO;
 import ru.gb.hw02.task1.database.entities.User;
 import ru.gb.hw02.task1.database.models.SQLModel;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,8 +33,8 @@ public class UserDAOImpl implements UserDAO {
         
             result = SQLModel.executeUpdateWithParams(query, params);
             log.info("User data was updated.");
-        } catch (IllegalArgumentException e) {
-            System.out.printf("Query execute error: %s\n", e.getMessage());
+        } catch (IllegalArgumentException | SQLException e) {
+            System.out.printf("[update] Query execution error: %s\n", e.getMessage());
         }
         
         return result;
@@ -77,8 +78,8 @@ public class UserDAOImpl implements UserDAO {
                 user.setUpdated_at(item.get("updated_at"));
                 log.info("The fields are set based on the query result.");
             }
-        } catch (IllegalArgumentException e) {
-            System.out.printf("Query execute error: %s\n", e.getMessage());
+        } catch (IllegalArgumentException | SQLException e) {
+            System.out.printf("[selectOne] Query execution error: %s\n", e.getMessage());
         }
         
         return user;
@@ -112,8 +113,8 @@ public class UserDAOImpl implements UserDAO {
                 user.setUpdated_at(item.get("updated_at"));
                 log.info("The fields are set based on the query result.");
             }
-        } catch (IllegalArgumentException e) {
-            System.out.printf("Query execute error: %s\n", e.getMessage());
+        } catch (IllegalArgumentException | SQLException e) {
+            System.out.printf("[selectOne] Query execution error: %s\n", e.getMessage());
         }
         
         return user;
@@ -123,30 +124,34 @@ public class UserDAOImpl implements UserDAO {
     public List<User> selectAll() {
         List<User> users = new ArrayList<>();
     
-        String query =
-                " SELECT u_id id, u_login login, u_name name, u_email email, u_age age, u_sex sex, updated_at" +
-                " FROM users ORDER BY created_at DESC";
+        try {
+            String query =
+                    " SELECT u_id id, u_login login, u_name name, u_email email, u_age age, u_sex sex, updated_at" +
+                    " FROM users ORDER BY created_at DESC";
+            
+            ArrayList<HashMap<String, String>> result = SQLModel.execute(query);
+            log.info("Received query result.");
+            
+            if (result.size() > 0) {
+                result.forEach(item -> {
+                    User user = new User();
+                    log.info("The User object is created.");
         
-        ArrayList<HashMap<String, String>> result = SQLModel.execute(query);
-        log.info("Received query result.");
-        
-        if (result.size() > 0) {
-            result.forEach(item -> {
-                User user = new User();
-                log.info("The User object is created.");
-    
-                user.setId(Integer.parseInt(item.get("id")));
-                user.setLogin(item.get("login"));
-                user.setName(item.get("name"));
-                user.setEmail(item.get("email"));
-                user.setAge(Integer.parseInt(item.get("age")));
-                user.setSex(item.get("sex"));
-                user.setUpdated_at(item.get("updated_at"));
-                log.info("The fields are set based on the query result.");
-                
-                users.add(user);
-                log.info("The User object is added to ArrayList.");
-            });
+                    user.setId(Integer.parseInt(item.get("id")));
+                    user.setLogin(item.get("login"));
+                    user.setName(item.get("name"));
+                    user.setEmail(item.get("email"));
+                    user.setAge(Integer.parseInt(item.get("age")));
+                    user.setSex(item.get("sex"));
+                    user.setUpdated_at(item.get("updated_at"));
+                    log.info("The fields are set based on the query result.");
+                    
+                    users.add(user);
+                    log.info("The User object is added to ArrayList.");
+                });
+            }
+        } catch (SQLException e) {
+            System.out.printf("[selectAll] Query execution error: %s\n", e.getMessage());
         }
         
         return users;

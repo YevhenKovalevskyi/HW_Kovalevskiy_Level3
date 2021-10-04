@@ -121,7 +121,7 @@ public class ClientHandler {
                 
                 String message = (result == 1)
                         ? String.format("field [ %s ] was updated!", data[1])
-                        : String.format("field [ %s ] was not updated! Something went wrong", data[1]);
+                        : String.format("field [ %s ] was not updated! Something went wrong. Code: %d", data[1], result);
                 sendMessage(message);
                 
                 continue;
