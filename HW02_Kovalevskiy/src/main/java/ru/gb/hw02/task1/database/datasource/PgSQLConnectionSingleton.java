@@ -14,8 +14,8 @@ public class PgSQLConnectionSingleton {
     
     }
     
-    public static Connection getInstance() {
-        if (instance == null) {
+    public static Connection getInstance() throws SQLException {
+        if (instance == null || instance.isClosed()) {
             try {
                 instance = new DataSourceFactory().getPgSQLDataSource().getConnection();
                 log.info("The new PgSQLDataSource connection instance is created.");
