@@ -14,8 +14,8 @@ public class MySQLConnectionSingleton {
     
     }
     
-    public static Connection getInstance() {
-        if (instance == null) {
+    public static Connection getInstance() throws SQLException {
+        if (instance == null || instance.isClosed()) {
             try {
                 instance = new DataSourceFactory().getMySQLDataSource().getConnection();
                 log.info("The new MySQLDataSource connection instance is created.");
