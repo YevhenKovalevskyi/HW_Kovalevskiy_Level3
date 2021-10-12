@@ -11,39 +11,34 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
-public class ClientHandler implements Runnable {
+public class ClientHandler {
     
     private Server server;
-    private Socket socket;
     private DataInputStream in;
     private DataOutputStream out;
     private String name;
     private User user;
-
+    
     public ClientHandler(Server server, Socket socket) {
         try {
             this.server = server;
-            this.socket = socket;
             in = new DataInputStream(socket.getInputStream());
             out = new DataOutputStream(socket.getOutputStream());
+    
+            server.executorService.execute(() -> {
+                try {
+                    doAuthentication();
+                    listenMessages();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    closeConnection(socket);
+                }
+            });
+            server.executorService.shutdown();
         } catch (IOException e) {
             throw new RuntimeException("Something went wrong during client establishing...", e);
         }
-    }
-    
-    @Override
-    public void run() {
-        server.executorService.execute(() -> {
-            try {
-                doAuthentication();
-                listenMessages();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                closeConnection(socket);
-            }
-        });
-        server.executorService.shutdown();
     }
 
     private void closeConnection(Socket socket) {
