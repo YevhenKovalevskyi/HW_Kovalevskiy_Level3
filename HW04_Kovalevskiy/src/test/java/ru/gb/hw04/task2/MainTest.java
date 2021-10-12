@@ -1,4 +1,4 @@
-package ru.gb.hw04.task1;
+package ru.gb.hw04.task2;
 
 import lombok.extern.slf4j.Slf4j;
 
