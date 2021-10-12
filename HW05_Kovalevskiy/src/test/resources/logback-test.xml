@@ -34,19 +34,18 @@
         </encoder>
     </appender>
 
-    <appender name="TASK1_STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <pattern>${log.pattern}</pattern>
         </encoder>
     </appender>
 
-    <logger name="TASK1">
-
+    <logger name="ru.gb.hw05.task1">
+        <appender-ref ref="TASK1_ACTUAL" />
+        <appender-ref ref="TASK1_ERROR" />
     </logger>
 
     <root level="INFO">
-        <appender-ref ref="TASK1_ACTUAL" />
-        <appender-ref ref="TASK1_ERROR" />
-        <appender-ref ref="TASK1_STDOUT" />
+        <appender-ref ref="STDOUT" />
     </root>
 </configuration>
