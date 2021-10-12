@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class Server implements Runnable {
+public class Server {
     
     protected ExecutorService executorService;
     private ServerSocket serverSocket;
@@ -22,19 +22,13 @@ public class Server implements Runnable {
         try {
             serverSocket = new ServerSocket(8888);
             executorService = Executors.newSingleThreadExecutor(); /* Executors.newFixedThreadPool (poolSize) */
+            
+            while (true) {
+                Socket socket = serverSocket.accept();
+                new ClientHandler(this, socket);
+            }
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-    
-    @Override
-    public void run() {
-        try {
-            while (true) {
-                executorService.execute(new ClientHandler(this, serverSocket.accept()));
-            }
-        } catch (IOException ex) {
-            executorService.shutdown();
         }
     }
 
