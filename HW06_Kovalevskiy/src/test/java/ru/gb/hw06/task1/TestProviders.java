@@ -37,12 +37,12 @@ public class TestProviders {
                 Arguments.of(
                         new int[]{3, 2, 7, 4, 8 ,12, 4, 7},
                         4,
-                        new int[]{4, 7}
+                        new int[]{7}
                 ),
                 Arguments.of(
                         new int[]{1, 2, 4, 5, 6, 1, 0},
                         4,
-                        new int[]{4, 5, 6, 1, 0}
+                        new int[]{5, 6, 1, 0}
                 )
         );
     }
@@ -52,7 +52,7 @@ public class TestProviders {
                 Arguments.of(
                         new int[]{3, 2, 7, 4, 8 ,12, 4, 7},
                         4,
-                        new int[]{4, 8}
+                        new int[]{4, 7}
                 ),
                 Arguments.of(
                         new int[]{1, 2, 4, 5, 6, 1, 0},
