@@ -41,7 +41,7 @@ public class ArrayService {
             throw new UnsuitableArrayException(Messages.UNSUITABLE_ARRAY.getOutMessage());
         }
         
-        return Arrays.copyOfRange(arrayToSlice, lastkeyValue, arrayLength);
+        return Arrays.copyOfRange(arrayToSlice, Math.min(lastkeyValue + 1, arrayLength), arrayLength);
     }
     
     /**
